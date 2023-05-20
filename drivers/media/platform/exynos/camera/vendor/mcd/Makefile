@@ -1,3 +1,5 @@
+ccflags-y += -Werror $(call cc-disable-warning, vla-extension )
+ccflags-y += -Wno-vla-extension
 obj-$(CONFIG_CAMERA_EEPROM_SUPPORT_REAR)	+= is-device-eeprom.o
 obj-$(CONFIG_CAMERA_OTPROM_SUPPORT_REAR)	+= is-device-otprom.o
 obj-$(CONFIG_CAMERA_EEPROM_SUPPORT_FRONT)	+= is-device-eeprom.o

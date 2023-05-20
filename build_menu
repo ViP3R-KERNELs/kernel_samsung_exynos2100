@@ -17,6 +17,7 @@ export PATH=$PATH:$LINUX_GCC_CROSS_COMPILE_PREBUILTS_BIN:$CLANG_PREBUILT_BIN
 export LLVM=1
 export USE_CCACHE=1
 export CCACHE_EXEC=/usr/bin/ccache
+
 #export CCACHE_DIR=/mnt/ccache
 ccache -M 50G -F 0
 
@@ -58,7 +59,6 @@ clean(){
 }
 
 build_kernel(){
-  KERNEL_MAKE_ENV="LOCALVERSION=-Hari-v${harikernelver}-OneUI"
   echo "${GREEN}***** Compiling kernel for ${VARIANT} *****${STD}"
   [ ! -d "out" ] && mkdir out
   make -j$(nproc) -C $(pwd) $KERNEL_MAKE_ENV hari_${VARIANT}_defconfig
@@ -174,6 +174,34 @@ build_kernel_p3s(){
   anykernel3
   clean
 }
+build_kernel_p3s_nethunter(){
+  read -p "Enter Kernel Release Version v" harikernelver
+  VARIANT=p3snethunter
+  build_kernel
+  curtime=`date +"%m_%d_%H%M"`
+  releasefilename=ViP3R-v1.0-Nethnter_${curtime}_OneUI_${VARIANT}
+  anykernel3
+  clean
+}
+
+build_kernel_o1s_nethunter(){
+  read -p "Enter Kernel Release Version v" harikernelver
+  VARIANT=o1snethunter
+  build_kernel
+  curtime=`date +"%m_%d_%H%M"`
+  releasefilename=ViP3R-v1.0-Nethnter_${curtime}_OneUI_${VARIANT}
+  anykernel3
+  clean
+} 
+build_kernel_t2s_nethunter(){
+  read -p "Enter Kernel Release Version v" harikernelver
+  VARIANT=t2snethunter
+  build_kernel
+  curtime=`date +"%m_%d_%H%M"`
+  releasefilename=ViP3R-v1.0-Nethnter_${curtime}_OneUI_${VARIANT}
+  anykernel3
+  clean
+}
 
 build_kernel_all_devices(){
   read -p "Enter Kernel Release Version v" harikernelver
@@ -204,29 +232,35 @@ clang
 # Show menu
 show_menus(){
   echo "${ON_BLUE} B U I L D - M E N U ${STD}"
-  echo "1. ${Under_Line}B${STD}uild kernel for o1s"
-  echo "2. ${Under_Line}B${STD}uild kernel for t2s"
-  echo "3. ${Under_Line}B${STD}uild kernel for p3s"
-  echo "4. ${Under_Line}B${STD}uild kernel for all devices"
-  echo "5. Build kernel ${Under_Line}m${STD}odules"
-  echo "6. ${Under_Line}C${STD}lean"
-  echo "7. Make ${Under_Line}f${STD}lashable zip"
-  echo "8. E${Under_Line}x${STD}it"
+  echo " 1. ${Under_Line}B${STD}uild kernel for o1s"
+  echo " 2. ${Under_Line}B${STD}uild kernel for t2s"
+  echo " 3. ${Under_Line}B${STD}uild kernel for p3s"
+  echo " 4. ${Under_Line}B${STD}uild kernel for o1s Nethunter"
+  echo " 5. ${Under_Line}B${STD}uild kernel for t2s Nethunter"
+  echo " 6. ${Under_Line}B${STD}uild kernel for p3s Nethunter"
+  echo " 7. ${Under_Line}B${STD}uild kernel for all devices"
+  echo " 8. Build kernel ${Under_Line}m${STD}odules"
+  echo " 9. ${Under_Line}C${STD}lean"
+  echo "10. Make ${Under_Line}f${STD}lashable zip"
+  echo "11. E${Under_Line}x${STD}it"
 }
 
 # Read input
 read_options(){
   local choice
-  read -p "Enter choice [ 1 - 8] " choice
+  read -p "Enter choice [ 1 - 11] : " choice
   case $choice in
     1|b|B) build_kernel_o1s ;;
     2|b|B) build_kernel_t2s ;;
     3|b|B) build_kernel_p3s ;;
-    4|a|A) build_kernel_all_devices ;;
-    5|m|M) build_kernel_modules ;;
-    6|c|C) clean ;;
-    7|f|F) anykernel3;;
-    8|x|X) exit 0;;
+    4|b|B) build_kernel_o1s_nethunter ;;
+    5|b|B) build_kernel_t2s_nethunter ;;
+    6|b|B) build_kernel_p3s_nethunter ;;
+    7|a|A) build_kernel_all_devices ;;
+    8|m|M) build_kernel_modules ;;
+    9|c|C) clean ;;
+   10|f|F) anykernel3;;
+   11|x|X) exit 0;;
     *) pause 'return to Main menu' 'Invalid option, '
   esac
 }
